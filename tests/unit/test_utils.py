@@ -26,25 +26,25 @@ def test_get_full_table_version(mocked_time):
 
 
 def test_is_first_run():
-    """Ensure returns true if `is_first_run` is either: a non-True value or not
+    """Ensure returns True if `wrote_initial_activate_version` is either: a non-True value or not
     found in bookmarks - else returns False
     """
 
     assert (
-        is_first_run("payments", {"bookmarks": {"payments": {"is_first_run": False}}})
+        is_first_run("payments", {"bookmarks": {"payments": {"wrote_initial_activate_version": True}}})
         is False
     )
     assert (
-        is_first_run("payments", {"bookmarks": {"payments": {"is_first_run": True}}})
+        is_first_run("payments", {"bookmarks": {"payments": {"wrote_initial_activate_version": False}}})
         is True
     )
     assert is_first_run("payments", {"bookmarks": {}}) is True
     assert (
-        is_first_run("payments", {"bookmarks": {"payments": {"is_first_run": 1}}})
+        is_first_run("payments", {"bookmarks": {"payments": {"wrote_initial_activate_version": 1}}})
         is True
     )
     assert (
-        is_first_run("payments", {"bookmarks": {"payments": {"is_first_run": "true"}}})
+        is_first_run("payments", {"bookmarks": {"payments": {"wrote_initial_activate_version": "true"}}})
         is True
     )
 

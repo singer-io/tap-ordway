@@ -207,7 +207,7 @@ def prepare_stream(
                 )
 
                 write_bookmark(
-                    state, substream_def.tap_stream_id, "is_first_run", False
+                    state, substream_def.tap_stream_id, "wrote_initial_activate_version", True
                 )
                 write_state(state)
 
@@ -231,7 +231,7 @@ def prepare_stream(
             stream_version,
         )
 
-        write_bookmark(state, stream_def.tap_stream_id, "is_first_run", False)
+        write_bookmark(state, stream_def.tap_stream_id, "wrote_initial_activate_version", True)
         write_state(state)
 
     return filter_datetime

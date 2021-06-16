@@ -37,12 +37,12 @@ def get_full_table_version() -> int:
 def is_first_run(tap_stream_id: str, state: Dict[str, Any]) -> bool:
     """Checks bookmarks to determine if its a stream's first run"""
 
-    value = get_bookmark(state, tap_stream_id, "is_first_run", default=True) 
+    value = get_bookmark(state, tap_stream_id, "wrote_initial_activate_version", default=False) 
 
     if not isinstance(value, bool):
         return True
 
-    return value
+    return not value
 
 
 def get_filter_datetime(

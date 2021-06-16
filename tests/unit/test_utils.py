@@ -1,6 +1,11 @@
 from unittest import TestCase
 from unittest.mock import patch
-from tap_ordway.utils import denest, get_company_id, get_full_table_version
+from tap_ordway.utils import (
+    denest,
+    get_company_id,
+    get_full_table_version,
+    is_first_run,
+)
 
 
 @patch.dict(
@@ -18,6 +23,30 @@ def test_get_full_table_version(mocked_time):
 
     assert get_full_table_version() == 1337000
     assert mocked_time.call_count == 1
+
+
+def test_is_first_run():
+    """Ensure returns true if `is_first_run` is either: a non-True value or not
+    found in bookmarks - else returns False
+    """
+
+    assert (
+        is_first_run("payments", {"bookmarks": {"payments": {"is_first_run": False}}})
+        is False
+    )
+    assert (
+        is_first_run("payments", {"bookmarks": {"payments": {"is_first_run": True}}})
+        is True
+    )
+    assert is_first_run("payments", {"bookmarks": {}}) is True
+    assert (
+        is_first_run("payments", {"bookmarks": {"payments": {"is_first_run": 1}}})
+        is True
+    )
+    assert (
+        is_first_run("payments", {"bookmarks": {"payments": {"is_first_run": "true"}}})
+        is True
+    )
 
 
 class DenestTestCase(TestCase):

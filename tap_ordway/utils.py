@@ -34,25 +34,6 @@ def get_full_table_version() -> int:
     return int(time() * 1000)
 
 
-def get_version(
-    stream: "StreamABC", start_date: str, filter_datetime: Optional["datetime"] = None
-) -> Optional[int]:
-    """ Generates a version for `stream` """
-
-    is_first_run = True
-
-    if filter_datetime is not None:
-        is_first_run = filter_datetime <= strptime_to_utc(start_date)
-
-    if stream.is_valid_incremental:
-        if is_first_run:
-            return 1
-
-        return None
-
-    return get_full_table_version()
-
-
 def get_filter_datetime(
     stream: "StreamABC", start_date: str, state: Dict[str, Any]
 ) -> "datetime":

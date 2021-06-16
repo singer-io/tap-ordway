@@ -1,8 +1,6 @@
 from unittest import TestCase
-from unittest.mock import MagicMock, patch
-from datetime import datetime
-from pytz import UTC
-from tap_ordway.utils import denest, get_company_id, get_full_table_version, get_version
+from unittest.mock import patch
+from tap_ordway.utils import denest, get_company_id, get_full_table_version
 
 
 @patch.dict(
@@ -20,40 +18,6 @@ def test_get_full_table_version(mocked_time):
 
     assert get_full_table_version() == 1337000
     assert mocked_time.call_count == 1
-
-
-class GetVersionTestCase(TestCase):
-    @patch("tap_ordway.utils.get_full_table_version")
-    def test_full_table_stream(self, mocked_get_full_table_version):
-        """ Ensure get_full_table_version is invoked on FULL_TABLE streams """
-
-        mocked_stream = MagicMock()
-        mocked_stream.is_valid_incremental = False
-
-        get_version(mocked_stream, "2020-01-01", None)
-
-        self.assertEqual(mocked_get_full_table_version.call_count, 1)
-
-    def test_version_is_1_when_incremental_first_run(self):
-        mocked_stream = MagicMock()
-        mocked_stream.is_valid_incremental = True
-
-        version = get_version(
-            mocked_stream, "2020-01-01", datetime(2018, 12, 1, tzinfo=UTC)
-        )
-        self.assertEqual(version, 1)
-
-        version = get_version(mocked_stream, "2020-01-01", None)
-        self.assertEqual(version, 1)
-
-    def test_version_is_None_on_incremental_non_first_runs(self):
-        mocked_stream = MagicMock()
-        mocked_stream.is_valid_incremental = True
-
-        version = get_version(
-            mocked_stream, "2020-01-01", datetime(2020, 2, 1, tzinfo=UTC)
-        )
-        self.assertIsNone(version)
 
 
 class DenestTestCase(TestCase):

@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Any, Dict, List, Optional, Tuple
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Tuple, Union
 from time import time
 from inflection import underscore
 from singer.bookmarks import get_bookmark
@@ -33,6 +33,10 @@ def get_full_table_version() -> int:
 
     return int(time() * 1000)
 
+def is_first_run(stream: "StreamABC", state: Dict[str, Any]) -> bool:
+    """Checks bookmarks to determine if its a stream's first run"""
+
+    return get_bookmark(state, stream.tap_stream_id, "is_first_run", default=True) is True
 
 def get_filter_datetime(
     stream: "StreamABC", start_date: str, state: Dict[str, Any]

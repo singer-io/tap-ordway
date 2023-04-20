@@ -36,7 +36,7 @@
         },
         "discount_value": {
             "type": [
-                "number"
+                "decimal"
             ]
         },
         "duration_period": {

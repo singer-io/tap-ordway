@@ -78,22 +78,13 @@
       "type": ["null", "object"]
     },
     "debit_lines": {
-      "type": [
-				"null",
-				"array"
-			]
+      "type": ["null", "array"]
     },
     "payments": {
-      "type": [
-				"null",
-				"array"
-			]
+      "type": ["null","array"]
     },
     "credits": {
-     "type": [
-				"null",
-				"array"
-			]
+     "type": ["null", "array"]
     },
     "journal_entry_id":{
       "type": "string"

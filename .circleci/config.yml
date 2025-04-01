@@ -26,6 +26,7 @@ jobs:
           name: 'Unit Tests'
           command: |
             source /usr/local/share/virtualenvs/tap-ordway/bin/activate
+            pip install nose coverage parameterized
             nosetests tests/unit/
       - run:
           name: 'Integration Tests'

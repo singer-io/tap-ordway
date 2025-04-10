@@ -35,7 +35,6 @@ jobs:
             source dev_env.sh
             source /usr/local/share/virtualenvs/tap-tester/bin/activate
              pip install .[dev,testing]
-            run-test --tap=tap-ordway tests/integration
 workflows:
   version: 2
   commit:

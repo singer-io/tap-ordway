@@ -338,6 +338,16 @@ class DebitMemo(Stream):
     replication_method = "FULL_TABLE"
     request_handler = RequestHandler("/debit_memos", sort="updated_at,id")
 
+class JournalEntry(Stream):
+    """Journal Entry stream
+    Ordway Documentation: https://ordwaylabs.api-docs.io/v1/models/journal_entries
+    """
+
+    tap_stream_id = "journal_entries"
+    key_properties = ["journal_entry_id", "company_id"]
+    transformer_class = RecordTransformer
+    request_handler = RequestHandler("/journal_entries", sort="updated_at,id")
+
 
 AVAILABLE_STREAMS: Dict[str, Union[Type[Stream], Type["Substream"]]] = {
     "billing_runs": BillingRuns,
@@ -364,4 +374,5 @@ AVAILABLE_STREAMS: Dict[str, Union[Type[Stream], Type["Substream"]]] = {
     "payment_methods": PaymentMethods,
     "customer_notes": CustomerNotes,
     "debit_memo": DebitMemo,
+    "journal_entries": JournalEntry
 }

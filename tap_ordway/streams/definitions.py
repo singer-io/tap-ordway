@@ -333,9 +333,7 @@ class DebitMemo(Stream):
 
     tap_stream_id = "debit_memo"
     key_properties = ["debit_memo_id", "company_id"]
-    transformer_class = DebitMemoTransformer
-    replication_key = None
-    replication_method = "FULL_TABLE"
+    transformer_class = RecordTransformer
     request_handler = RequestHandler("/debit_memos", sort="updated_at,id")
 
 class JournalEntry(Stream):
@@ -347,7 +345,6 @@ class JournalEntry(Stream):
     key_properties = ["journal_entry_id", "company_id"]
     transformer_class = RecordTransformer
     request_handler = RequestHandler("/journal_entries", sort="updated_at,id")
-
 
 AVAILABLE_STREAMS: Dict[str, Union[Type[Stream], Type["Substream"]]] = {
     "billing_runs": BillingRuns,

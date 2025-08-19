@@ -9,9 +9,9 @@ ROOT_DIR = abspath(dirname(__file__))
 
 INSTALL_REQUIRES = [
     "singer-python>=5.0.12",
-    "requests",
-    "kafka-python",
-    "inflection",
+    "requests==2.32.4",
+    "kafka-python==2.2.15",
+    "inflection==0.5.1",
 ]
 
 EXTRA_REQUIRES = {

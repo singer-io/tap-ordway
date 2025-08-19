@@ -8,8 +8,8 @@ PACKAGE_DIR = PACKAGE_NAME.replace("-", "_")
 ROOT_DIR = abspath(dirname(__file__))
 
 INSTALL_REQUIRES = [
-    "singer-python>=5.0.12",
-    "requests==2.32.4",
+    "singer-python==6.1.1",
+    "requests==2.32.5",
     "kafka-python==2.2.15",
     "inflection==0.5.1",
 ]

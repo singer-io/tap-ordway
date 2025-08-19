@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.4.0
+  * Libraries version update [#19](https://github.com/singer-io/tap-ordway/pull/19)
+
 ## 0.3.0
   * Add support for new Stream DebitMemo [#17](https://github.com/singer-io/tap-ordway/pull/17)
 

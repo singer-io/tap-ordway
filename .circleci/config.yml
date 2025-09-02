@@ -11,7 +11,7 @@ jobs:
             uv venv --python 3.12 /usr/local/share/virtualenvs/tap-ordway
             source /usr/local/share/virtualenvs/tap-ordway/bin/activate
             uv pip install -U 'setuptools<51.0.0'
-            uv pip install .[dev,testing]
+            uv pip install .[dev]
       - run:
           name: 'JSON Validator'
           command: |
@@ -35,7 +35,7 @@ jobs:
             uv pip install --upgrade awscli
             aws s3 cp s3://com-stitchdata-dev-deployment-assets/environments/tap-tester/tap_tester_sandbox dev_env.sh
             source dev_env.sh
-            # uv pip install --upgrade vcrpy
+            uv pip install .[dev,testing]
             run-test --tap=tap-ordway tests/integration
 workflows:
   version: 2

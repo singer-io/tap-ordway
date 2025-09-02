@@ -21,7 +21,7 @@ EXTRA_REQUIRES = {
         "pytest==6.1.1",
         "pytest-cov==2.10.1",
         "pytest-xdist==2.1.0",
-        "vcrpy==4.1.1",
+        "vcrpy",
     ],
 }
 

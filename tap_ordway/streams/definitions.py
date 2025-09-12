@@ -370,5 +370,5 @@ AVAILABLE_STREAMS: Dict[str, Union[Type[Stream], Type["Substream"]]] = {
     "payment_methods": PaymentMethods,
     "customer_notes": CustomerNotes,
     "debit_memo": DebitMemo,
-    "journal_entries": JournalEntry
+    "journal_entries": JournalEntry,
 }

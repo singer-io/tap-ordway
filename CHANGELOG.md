@@ -2,7 +2,8 @@
 
 ## 0.4.3
   * Updated missing fields from below Modules 
-  * Charges, Invoices, Orders, Payments, Plans, Refunds, Subscriptions
+  * Charges, Invoices, Orders, Payments, Plans, Refunds, Subscriptions, Billing runs, Billing Schedules, Chart of accounts, Credits, Customers, Payment runs, Products, Revenue Schedules, Webhooks
+
   * https://github.com/singer-io/tap-ordway/pull/21
 
 ## 0.4.2

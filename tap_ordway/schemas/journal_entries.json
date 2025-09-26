@@ -3,6 +3,6 @@
         "null",
         "object"
     ],
-    "additionalProperties": false,
+    "additionalProperties": true,
     "properties": {}
 }

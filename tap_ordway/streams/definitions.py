@@ -7,7 +7,7 @@ from ..transformers import (
     InvoiceTransformer,
     OrderTransformer,
     RecordTransformer,
-    SubscriptionTransformer
+    SubscriptionTransformer,
 )
 from .base import EndpointSubstream, ResponseSubstream, Stream
 

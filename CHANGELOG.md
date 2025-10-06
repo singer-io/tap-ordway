@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.4.4
+  * Add replication-keys and primary-keys in the schema of journal_entries. [#26](https://github.com/singer-io/tap-ordway/pull/26)
+
 ## 0.4.3
   * Update Product to have transaction posting entries
   * Update Subscription to have transaction posting entries

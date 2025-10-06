@@ -449,7 +449,21 @@
         "company_id"
       ],
       "schema": {
-        "properties": {},
+        "properties": {
+          "company_id": {
+            "type": "string"
+          },
+          "journal_entry_id": {
+            "type": "string"
+          },
+          "updated_date": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "format": "date-time"
+          }
+        },
         "type": [
           "null",
           "object"
@@ -470,6 +484,33 @@
             ],
             "inclusion": "available",
             "selected": true
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "company_id"
+          ],
+          "metadata": {
+            "inclusion": "automatic"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "journal_entry_id"
+          ],
+          "metadata": {
+            "inclusion": "available"
+          }
+        },
+        {
+          "breadcrumb": [
+            "properties",
+            "updated_date"
+          ],
+          "metadata": {
+            "inclusion": "available"
           }
         }
       ]
@@ -9156,4 +9197,3 @@
     }
   ]
 }
-

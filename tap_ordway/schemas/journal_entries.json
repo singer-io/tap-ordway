@@ -1,8 +1,22 @@
 {
-	"type": [
-		"null",
-		"object"
-	],
-	"additionalProperties": true,
-	"properties": {}
+    "type": [
+        "null",
+        "object"
+    ],
+    "additionalProperties": true,
+    "properties": {
+        "company_id": {
+            "type": "string"
+        },
+        "journal_entry_id": {
+            "type": "string"
+        },
+        "updated_date": {
+            "type": [
+                "null",
+                "string"
+            ],
+            "format": "date-time"
+        }
+    }
 }

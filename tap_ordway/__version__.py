@@ -1,1 +1,1 @@
-__version__ = "0.4.3"  # Missing Fields update
+__version__ = "0.4.5"  # Updating missing fields

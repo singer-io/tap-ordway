@@ -8,6 +8,8 @@ from ..transformers import (
     OrderTransformer,
     RecordTransformer,
     SubscriptionTransformer,
+    PlanTransformer,
+    ChargeTransformer
 )
 from .base import EndpointSubstream, ResponseSubstream, Stream
 
@@ -210,7 +212,7 @@ class Charges(ResponseSubstream):
     replication_key = None
     replication_method = "FULL_TABLE"
     path = ("charges",)
-    transformer_class = RecordTransformer
+    transformer_class = ChargeTransformer
 
 
 class Plans(Stream):
@@ -225,7 +227,7 @@ class Plans(Stream):
     valid_replication_keys: Sequence[str] = []
     replication_key = None
     replication_method = "FULL_TABLE"
-    transformer_class = RecordTransformer
+    transformer_class = PlanTransformer
     request_handler = RequestHandler("/plans")
 
 
@@ -337,6 +339,7 @@ class DebitMemo(Stream):
 
 class JournalEntry(Stream):
     """Journal Entry stream
+
     Ordway Documentation: https://ordwaylabs.api-docs.io/v1/models/journal_entries
     """
 
@@ -344,6 +347,7 @@ class JournalEntry(Stream):
     key_properties = ["journal_entry_id", "company_id"]
     transformer_class = RecordTransformer
     request_handler = RequestHandler("/journal_entries", sort="updated_at,id")
+
 
 AVAILABLE_STREAMS: Dict[str, Union[Type[Stream], Type["Substream"]]] = {
     "billing_runs": BillingRuns,

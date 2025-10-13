@@ -73,8 +73,7 @@ class InvoiceTransformer(RecordTransformer):
                     "exchange_rate":data.get("exchange_rate"),
                     "emailed":data.get("emailed"),
                     "reversal_email":data.get("reversal_email"),
-                    "payment_term_id":data.get("payment_term_id"),
-                    "invoice_pdf_url":data.get("invoice_pdf_url"),
+                    "payment_term_id":data.get("payment_term_id")
                 }
             )
 
@@ -201,28 +200,3 @@ class DebitMemoTransformer(RecordTransformer):
             )
 
             yield debit_memo_line
-
-class ProductTransformer(RecordTransformer):
-    def pre_transform(self, data: Dict[str, Any], context: DataContext):
-        super().pre_transform(data, context)
-        return data
-
-class PaymentTransformer(RecordTransformer):
-    def pre_transform(self, data: Dict[str, Any], context: DataContext):
-        super().pre_transform(data, context)
-        return data
-
-class RefundTransformer(RecordTransformer):
-    def pre_transform(self, data: Dict[str, Any], context: DataContext):
-        super().pre_transform(data, context)
-        return data
-
-class PlanTransformer(RecordTransformer):
-    def pre_transform(self, data: Dict[str, Any], context: DataContext):
-        super().pre_transform(data, context)
-        return data
-
-class ChargeTransformer(RecordTransformer):
-    def pre_transform(self, data: Dict[str, Any], context: DataContext):
-        super().pre_transform(data, context)
-        return data

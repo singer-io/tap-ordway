@@ -5,7 +5,6 @@ from pathlib import Path
 from unittest.mock import patch
 from singer.messages import SchemaMessage
 from base import BaseOrdwayTestCase, TEST_FIXTURES_DIR
-from testing_tools.utils import alter_catalog_stream
 
 
 class MetadataTestCase(BaseOrdwayTestCase):

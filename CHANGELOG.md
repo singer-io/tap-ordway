@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.4.5
+  * Update metadata generation to include parent-tap-stream-id for substreams
+  * Add forced-replication-method support [#27](https://github.com/singer-io/tap-ordway/pull/27)
+
 ## 0.4.4
   * Add replication-keys and primary-keys in the schema of journal_entries. [#26](https://github.com/singer-io/tap-ordway/pull/26)
 

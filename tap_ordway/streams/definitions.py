@@ -69,6 +69,7 @@ class Contacts(ResponseSubstream):
     replication_method = "FULL_TABLE"
     path = ("contacts",)
     transformer_class = RecordTransformer
+    parent = "customers"
 
 
 class PaymentMethods(EndpointSubstream):
@@ -81,6 +82,7 @@ class PaymentMethods(EndpointSubstream):
     replication_method = "FULL_TABLE"
     request_handler = RequestHandler("/customers/{id}/payment_methods")
     transformer_class = RecordTransformer
+    parent = "customers"
 
 
 class CustomerNotes(EndpointSubstream):
@@ -96,6 +98,7 @@ class CustomerNotes(EndpointSubstream):
     replication_method = "FULL_TABLE"
     transformer_class = RecordTransformer
     request_handler = RequestHandler("/customers/{id}/customer_notes")
+    parent = "customers"
 
 
 # INCREMENTAL is allowed if substreams aren't selected.
@@ -211,6 +214,7 @@ class Charges(ResponseSubstream):
     replication_method = "FULL_TABLE"
     path = ("charges",)
     transformer_class = RecordTransformer
+    parent = "plans"
 
 
 class Plans(Stream):

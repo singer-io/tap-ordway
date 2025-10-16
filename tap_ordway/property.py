@@ -35,4 +35,5 @@ def get_stream_metadata(tap_stream_id, schema_dict) -> List:
         schema=schema_dict,
         key_properties=get_key_properties(tap_stream_id),
         valid_replication_keys=stream_def.valid_replication_keys,
+        replication_method=get_replication_method(tap_stream_id)
     )

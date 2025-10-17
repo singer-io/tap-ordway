@@ -1,4 +1,3 @@
-"""Integration tests for metadata functionality added in PR #27"""
 import unittest
 from singer import metadata
 from tap_ordway import discover

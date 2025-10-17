@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.4.5
+## 0.5.0
   * Update metadata generation to include parent-tap-stream-id for substreams
   * Add forced-replication-method support [#27](https://github.com/singer-io/tap-ordway/pull/27)
 

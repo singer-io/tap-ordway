@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.4.5
+  * Updated missing fields from below Modules 
+  * Charges, Invoices, Orders, Payments, Plans, Refunds, Subscriptions, Billing runs, Billing Schedules, Chart of accounts, Credits, Customers, Payment runs, Products, Revenue Schedules, Webhooks
+
+  * https://github.com/singer-io/tap-ordway/pull/21
+
 ## 0.4.4
   * Add replication-keys and primary-keys in the schema of journal_entries. [#26](https://github.com/singer-io/tap-ordway/pull/26)
 
@@ -7,6 +13,7 @@
   * Update Product to have transaction posting entries
   * Update Subscription to have transaction posting entries
   * Add Journal Entries Schema [#18](https://github.com/singer-io/tap-ordway/pull/18)
+
 
 ## 0.4.2
   * Revert v0.4.1

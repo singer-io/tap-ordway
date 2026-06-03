@@ -1,5 +1,9 @@
 # Changelog
 
+# 0.4.6
+  * Bump requests to 2.33.0 for security updates [#28](https://github.com/singer-io/tap-ordway/pull/28)
+
+
 ## 0.4.5
   * Updated missing fields from below Modules 
   * Charges, Invoices, Orders, Payments, Plans, Refunds, Subscriptions, Billing runs, Billing Schedules, Chart of accounts, Credits, Customers, Payment runs, Products, Revenue Schedules, Webhooks

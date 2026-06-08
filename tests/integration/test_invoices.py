@@ -27,6 +27,11 @@ MASKED_RESPONSE_FIELDS = {
     "subtotal": StrFormat.FLOAT,
     "invoice_tax": StrFormat.FLOAT,
     "discount": StrFormat.FLOAT,
+    "discount_display_name": StrFormat.RANDOM,
+    "exchange_rate": StrFormat.FLOAT,
+    "payment_term_id": StrFormat.RANDOM,
+    "emailed": Format.AUTO,
+    "reversal_email": Format.AUTO,
     # PMT
     "failed_attempt": Format.AUTO,
     "retried_attempts": Format.AUTO,
@@ -177,6 +182,7 @@ class InvoicesTestCase(BaseOrdwayTestCase):
                         "created_date": "2020-11-06T08:01:30.410000Z",
                         "created_by": "heeyeg5i@example.com",
                         "updated_by": "s1rkw1w4@example.com",
+                        "invoice_pdf_url": "zyu6hwpznfcr8c3c"
                     },
                     version=None,
                 ),
@@ -262,6 +268,7 @@ class InvoicesTestCase(BaseOrdwayTestCase):
                         "created_date": "2020-10-18T08:06:03.598000Z",
                         "created_by": "73tr1lsh@example.com",
                         "updated_by": "022pl4kr@example.com",
+                        "invoice_pdf_url": "uw5xrchb88qce1gha7lyx4i2x7czd28dat"
                     },
                     version=None,
                 ),
@@ -347,6 +354,7 @@ class InvoicesTestCase(BaseOrdwayTestCase):
                         "created_date": "2020-10-18T08:06:03.598000Z",
                         "created_by": "73tr1lsh@example.com",
                         "updated_by": "022pl4kr@example.com",
+                        "invoice_pdf_url": "uw5xrchb88qce1gha7lyx4i2x7czd28dat"
                     },
                     version=None,
                 ),
@@ -432,9 +440,10 @@ class InvoicesTestCase(BaseOrdwayTestCase):
                         "created_date": "2020-11-10T08:03:37.974000Z",
                         "created_by": "wx8626qy@example.com",
                         "updated_by": "lxkxssmk@example.com",
+                        "invoice_pdf_url": "6pr7xk09fd7x4a3z7211cwrycq3vbxdbk8pm2r1jz64"
                     },
                     version=None,
                 ),
             ],
-            ignored_keys=["company_id"],
+            ignored_keys=["company_id", "discount_display_name", "exchange_rate", "payment_term_id", "emailed", "reversal_email"],
         )

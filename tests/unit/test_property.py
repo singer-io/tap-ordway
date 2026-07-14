@@ -71,3 +71,79 @@ class GetStreamMetadataTestCase(TestCase):
 
         self.assertIn("table-key-properties", mdata[0]["metadata"])
         self.assertListEqual(mdata[0]["metadata"]["table-key-properties"], ["name"])
+
+    @patch.dict(
+        "tap_ordway.property.AVAILABLE_STREAMS",
+        {"foo": _TestStream},
+        clear=True,
+    )
+    def test_forced_replication_method_included(self):
+        """Test that forced-replication-method is included in metadata (PR #27)"""
+        mdata = get_stream_metadata("foo", load_schema("webhooks.json"))
+        
+        # Find the table-level metadata
+        table_metadata = None
+        for entry in mdata:
+            if entry["breadcrumb"] == ():
+                table_metadata = entry["metadata"]
+                break
+        
+        self.assertIsNotNone(table_metadata, "Table-level metadata should exist")
+        self.assertIn("forced-replication-method", table_metadata)
+        self.assertEqual(table_metadata["forced-replication-method"], "FULL_TABLE")
+
+
+class _TestStreamWithParent:
+    valid_replication_keys = []
+    key_properties = ["id"]
+    replication_method = "FULL_TABLE"
+    parent = "customers"
+
+
+class _TestStreamWithoutParent:
+    valid_replication_keys = []
+    key_properties = ["id"]
+    replication_method = "FULL_TABLE"
+
+
+class ParentStreamMetadataTestCase(TestCase):
+    """Test parent-tap-stream-id functionality added in PR #27"""
+    
+    @patch.dict(
+        "tap_ordway.property.AVAILABLE_STREAMS",
+        {"child_stream": _TestStreamWithParent},
+        clear=True,
+    )
+    def test_parent_tap_stream_id_included(self):
+        """Test that parent-tap-stream-id is included for substreams"""
+        mdata = get_stream_metadata("child_stream", load_schema("webhooks.json"))
+        
+        # Find the table-level metadata
+        table_metadata = None
+        for entry in mdata:
+            if entry["breadcrumb"] == ():
+                table_metadata = entry["metadata"]
+                break
+        
+        self.assertIsNotNone(table_metadata, "Table-level metadata should exist")
+        self.assertIn("parent-tap-stream-id", table_metadata)
+        self.assertEqual(table_metadata["parent-tap-stream-id"], "customers")
+
+    @patch.dict(
+        "tap_ordway.property.AVAILABLE_STREAMS",
+        {"parent_stream": _TestStreamWithoutParent},
+        clear=True,
+    )
+    def test_parent_tap_stream_id_not_included_for_parent_streams(self):
+        """Test that parent-tap-stream-id is not included for parent streams"""
+        mdata = get_stream_metadata("parent_stream", load_schema("webhooks.json"))
+        
+        # Find the table-level metadata
+        table_metadata = None
+        for entry in mdata:
+            if entry["breadcrumb"] == ():
+                table_metadata = entry["metadata"]
+                break
+        
+        self.assertIsNotNone(table_metadata, "Table-level metadata should exist")
+        self.assertNotIn("parent-tap-stream-id", table_metadata)

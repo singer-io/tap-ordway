@@ -1,5 +1,5 @@
 from typing import List, Optional
-from singer.metadata import get_standard_metadata
+from singer import metadata
 from .streams import AVAILABLE_STREAMS
 
 
@@ -31,8 +31,17 @@ def get_stream_metadata(tap_stream_id, schema_dict) -> List:
 
     stream_def = AVAILABLE_STREAMS[tap_stream_id]
 
-    return get_standard_metadata(
+    mdata = metadata.get_standard_metadata(
         schema=schema_dict,
         key_properties=get_key_properties(tap_stream_id),
         valid_replication_keys=stream_def.valid_replication_keys,
+        replication_method=get_replication_method(tap_stream_id)
     )
+
+    mdata = metadata.to_map(mdata)
+    parent_tap_stream_id = getattr(stream_def, "parent", None)
+    if parent_tap_stream_id:
+        mdata = metadata.write(mdata, (), 'parent-tap-stream-id', parent_tap_stream_id)
+    mdata = metadata.to_list(mdata)
+
+    return mdata

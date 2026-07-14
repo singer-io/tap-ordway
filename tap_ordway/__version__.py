@@ -1,1 +1,1 @@
-__version__ = "0.4.6"  # Updating missing fields
+__version__ = "0.5.0"  # Metadata and parent stream fixes

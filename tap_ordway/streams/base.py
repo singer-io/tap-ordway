@@ -44,6 +44,7 @@ class StreamABC(ABC):
     replication_method = "INCREMENTAL"
     replication_key: Optional[str] = "updated_date"
     valid_replication_keys: Sequence[str] = ["updated_date"]
+    parent = ""
 
     def __init__(
         self,

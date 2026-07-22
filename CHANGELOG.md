@@ -1,6 +1,15 @@
 # Changelog
 
 
+## 0.6.0
+  * Validate API credentials before discovery and sync; raise `InvalidCredentialsError` on HTTP 401/403 [credential-validation]
+  * Bump kafka-python 2.3.2 → 3.0.9
+  * Bump black 20.8b1 → 4.0.6
+  * Bump pylint 3.3.4 → 9.1.1
+  * Bump tox 3.20.1 → 7.1.0
+  * Pin mypy 2.3.0, pytest 9.1.1, pytest-cov 7.1.0, pytest-xdist 3.8.0, vcrpy 8.3.0
+
+
 ## 0.5.0
   * Update metadata generation to include parent-tap-stream-id for substreams
   * Add forced-replication-method support [#27](https://github.com/singer-io/tap-ordway/pull/27)

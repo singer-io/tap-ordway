@@ -17,6 +17,10 @@ from .utils import ratelimit
 
 LOGGER = get_logger()
 
+
+class InvalidCredentialsError(Exception):
+    """Raised when the Ordway API rejects the supplied credentials."""
+
 if TYPE_CHECKING:
     from typing_extensions import TypedDict
     from ..base import DataContext
@@ -75,6 +79,55 @@ def _get_url(path: str) -> str:
         path = path[1:]
 
     return f"{base_url}{path}"
+
+
+def validate_credentials() -> None:
+    """Validates API credentials by making a lightweight probe request.
+
+    Calls GET /customers (size=1) to verify credentials are accepted by the
+    Ordway API.  Must be called after :func:`tap_ordway.set_global_config` so
+    that ``TAP_CONFIG`` is populated.
+
+    Raises:
+        InvalidCredentialsError: When the API returns HTTP 401 or 403.
+        requests.exceptions.HTTPError: For other non-2xx responses.
+        requests.exceptions.RequestException: For network / connection errors.
+    """
+    LOGGER.info("Validating Ordway API credentials...")
+
+    session = Session()
+    url = _get_url("customers")
+
+    try:
+        response = session.get(
+            url,
+            headers=_get_headers(),
+            params={"size": 1, "page": 1},
+            timeout=DEFAULT_TIMEOUT_SECS,
+        )
+    except RequestException as err:
+        LOGGER.error("Connection error while validating credentials: %s", err)
+        raise
+
+    if response.status_code in (401, 403):
+        LOGGER.critical(
+            "Invalid Ordway API credentials (HTTP %d). "
+            "Verify company, user_email, user_token, and api_key in your config.",
+            response.status_code,
+        )
+        raise InvalidCredentialsError(
+            f"Ordway API rejected credentials with HTTP {response.status_code}"
+        )
+
+    if not response.ok:
+        LOGGER.critical(
+            'Ordway API returned unexpected status "%d" during credential validation: %s',
+            response.status_code,
+            response.text,
+        )
+        response.raise_for_status()
+
+    LOGGER.info("Ordway API credentials validated successfully.")
 
 
 class RequestHandler:

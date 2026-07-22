@@ -2,8 +2,15 @@ from unittest import TestCase
 from unittest.mock import MagicMock, patch
 from datetime import datetime
 from pytz import UTC
-from requests.exceptions import RequestException
-from tap_ordway.api.base import RequestHandler, _get_api_version, _get_headers, _get_url
+from requests.exceptions import ConnectionError as RequestsConnectionError, RequestException
+from tap_ordway.api.base import (
+    InvalidCredentialsError,
+    RequestHandler,
+    _get_api_version,
+    _get_headers,
+    _get_url,
+    validate_credentials,
+)
 
 
 @patch("tap_ordway.api.base.TAP_CONFIG")
@@ -170,3 +177,85 @@ class RequestHandlerTestCase(TestCase):
             self.mocked_get.assert_called_once_with(
                 self.request_handler, "/charges", {"sort": None, "size": 45, "page": 1}
             )
+
+
+class ValidateCredentialsTestCase(TestCase):
+    def setUp(self):
+        self.session_patcher = patch("tap_ordway.api.base.Session")
+        self.mocked_session_cls = self.session_patcher.start()
+        self.mocked_session = self.mocked_session_cls.return_value
+        self.mocked_response = MagicMock()
+        self.mocked_session.get.return_value = self.mocked_response
+
+        self.tap_config_patcher = patch("tap_ordway.api.base.TAP_CONFIG")
+        self.mocked_tap_config = self.tap_config_patcher.start()
+        self.mocked_tap_config.api_url = None
+        self.mocked_tap_config.staging = False
+        self.mocked_tap_config.api_version = "v1"
+        self.mocked_tap_config.api_credentials = {
+            "company": "TestCo",
+            "user_token": "tok",
+            "user_email": "test@example.com",
+            "api_key": "key",
+        }
+
+    def tearDown(self):
+        self.session_patcher.stop()
+        self.tap_config_patcher.stop()
+
+    def test_succeeds_on_200(self):
+        """A 200 response means credentials are valid — no exception raised."""
+        self.mocked_response.status_code = 200
+        self.mocked_response.ok = True
+
+        validate_credentials()  # should not raise
+
+        self.mocked_session.get.assert_called_once()
+        _, kwargs = self.mocked_session.get.call_args
+        self.assertEqual(kwargs["params"], {"size": 1, "page": 1})
+
+    def test_raises_invalid_credentials_on_401(self):
+        """HTTP 401 must raise InvalidCredentialsError."""
+        self.mocked_response.status_code = 401
+        self.mocked_response.ok = False
+
+        with self.assertRaises(InvalidCredentialsError):
+            validate_credentials()
+
+    def test_raises_invalid_credentials_on_403(self):
+        """HTTP 403 must raise InvalidCredentialsError."""
+        self.mocked_response.status_code = 403
+        self.mocked_response.ok = False
+
+        with self.assertRaises(InvalidCredentialsError):
+            validate_credentials()
+
+    def test_raises_http_error_on_other_non_2xx(self):
+        """Non-auth HTTP errors (e.g. 500) should surface via raise_for_status."""
+        from requests.exceptions import HTTPError
+        self.mocked_response.status_code = 500
+        self.mocked_response.ok = False
+        self.mocked_response.text = "Internal Server Error"
+        self.mocked_response.raise_for_status.side_effect = HTTPError("500 Server Error")
+
+        with self.assertRaises(HTTPError):
+            validate_credentials()
+
+        self.mocked_response.raise_for_status.assert_called_once()
+
+    def test_propagates_request_exception_on_network_error(self):
+        """Network-level errors must propagate as-is."""
+        self.mocked_session.get.side_effect = RequestsConnectionError("timeout")
+
+        with self.assertRaises(RequestsConnectionError):
+            validate_credentials()
+
+    def test_error_message_contains_status_code(self):
+        """InvalidCredentialsError message should mention the HTTP status code."""
+        self.mocked_response.status_code = 401
+        self.mocked_response.ok = False
+
+        with self.assertRaises(InvalidCredentialsError) as ctx:
+            validate_credentials()
+
+        self.assertIn("401", str(ctx.exception))

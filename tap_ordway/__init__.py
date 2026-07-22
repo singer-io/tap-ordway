@@ -17,6 +17,7 @@ from .property import (
     get_replication_method,
     get_stream_metadata,
 )
+from .api import validate_credentials
 from .streams import AVAILABLE_STREAMS, check_dependency_conflicts, is_substream
 from .utils import (
     get_filter_datetime,
@@ -333,6 +334,7 @@ def main():
     args = parse_args(REQUIRED_CONFIG_KEYS)
 
     set_global_config(args.config)
+    validate_credentials()
 
     # If discover flag was passed, run discovery mode and dump output to stdout
     if args.discover:

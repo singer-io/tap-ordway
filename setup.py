@@ -10,18 +10,18 @@ ROOT_DIR = abspath(dirname(__file__))
 INSTALL_REQUIRES = [
     "singer-python==6.8.0",
     "requests==2.34.2",
-    "kafka-python==2.3.2",
+    "kafka-python==3.0.9",
     "inflection==0.5.1",
 ]
 
 EXTRA_REQUIRES = {
-    "dev": ["black==20.8b1", "pylint==3.3.4", "tox==3.20.1"],
+    "dev": ["black==4.0.6", "pylint==9.1.1", "tox==7.1.0"],
     "testing": [
-        "mypy",
-        "pytest==6.1.1",
-        "pytest-cov==2.10.1",
-        "pytest-xdist==2.1.0",
-        "vcrpy",
+        "mypy==2.3.0",
+        "pytest==9.1.1",
+        "pytest-cov==7.1.0",
+        "pytest-xdist==3.8.0",
+        "vcrpy==8.3.0",
     ],
 }
 

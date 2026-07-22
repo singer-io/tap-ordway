@@ -278,7 +278,7 @@ class MainValidateCredentialsTestCase(TestCase):
         mock_parse_args.return_value = self._make_args(discover=True)
 
         from tap_ordway import main
-        with self.assertRaises(Exception):
+        with self.assertRaises(InvalidCredentialsError):
             main()
 
         mock_discover.assert_not_called()

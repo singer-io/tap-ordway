@@ -2,7 +2,7 @@ from unittest import TestCase
 from unittest.mock import MagicMock, patch
 from datetime import datetime
 from pytz import UTC
-from requests.exceptions import ConnectionError as RequestsConnectionError, RequestException
+from requests.exceptions import ConnectionError as RequestsConnectionError
 from tap_ordway.api.base import (
     InvalidCredentialsError,
     RequestHandler,

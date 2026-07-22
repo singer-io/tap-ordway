@@ -4,9 +4,9 @@
 ## 0.6.0
   * Validate API credentials before discovery and sync; raise `InvalidCredentialsError` on HTTP 401/403
   * Bump kafka-python 2.3.2 → 3.0.9
-  * Bump black 20.8b1 → 4.0.6
-  * Bump pylint 3.3.4 → 9.1.1
-  * Bump tox 3.20.1 → 7.1.0
+  * Bump black 20.8b1 → 26.5.1
+  * Bump pylint 3.3.4 → 4.0.6
+  * Bump tox 3.20.1 → 4.58.0
   * Pin mypy 2.3.0, pytest 9.1.1, pytest-cov 7.1.0, pytest-xdist 3.8.0, vcrpy 8.3.0
   * [#31](https://github.com/singer-io/tap-ordway/pull/31)
 

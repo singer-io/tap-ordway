@@ -15,7 +15,7 @@ INSTALL_REQUIRES = [
 ]
 
 EXTRA_REQUIRES = {
-    "dev": ["black==4.0.6", "pylint==9.1.1", "tox==7.1.0"],
+    "dev": ["black==26.5.1", "pylint==4.0.6", "tox==4.58.0"],
     "testing": [
         "mypy==2.3.0",
         "pytest==9.1.1",

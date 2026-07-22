@@ -83,6 +83,9 @@ celerybeat-schedule
 venv/
 ENV/
 
+# temporary
+tmp/
+
 # Spyder project settings
 .spyderproject
 

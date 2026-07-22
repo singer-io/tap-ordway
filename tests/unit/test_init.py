@@ -4,6 +4,7 @@ from datetime import datetime
 from pytz import UTC
 from tests.utils import generate_catalog
 from tap_ordway import filter_record, handle_record, prepare_stream
+from tap_ordway.api.base import InvalidCredentialsError
 
 
 class PrepareStreamTestCase(TestCase):
@@ -207,3 +208,77 @@ class HandleRecordTestCase(TestCase):
                 "foo": "bar",
             },
         )
+
+
+class MainValidateCredentialsTestCase(TestCase):
+    """Ensures main() calls validate_credentials() before discovery / sync."""
+
+    def _make_args(self, discover=True):
+        args = MagicMock()
+        args.config = {
+            "company": "TestCo",
+            "api_key": "key",
+            "user_email": "test@example.com",
+            "user_token": "tok",
+            "start_date": "2021-01-01",
+        }
+        args.discover = discover
+        args.state = {}
+        return args
+
+    @patch("tap_ordway.validate_credentials", autospec=True)
+    @patch("tap_ordway.discover", autospec=True)
+    @patch("tap_ordway.parse_args", autospec=True)
+    @patch("tap_ordway.set_global_config", autospec=True)
+    def test_validate_credentials_called_before_discover(
+        self, mock_set_global_config, mock_parse_args, mock_discover, mock_validate
+    ):
+        """validate_credentials() must be invoked before discover()."""
+        mock_parse_args.return_value = self._make_args(discover=True)
+        mock_discover.return_value = MagicMock()
+
+        call_order = []
+        mock_validate.side_effect = lambda: call_order.append("validate")
+        mock_discover.side_effect = lambda: call_order.append("discover") or MagicMock()
+
+        from tap_ordway import main
+        main()
+
+        mock_validate.assert_called_once()
+        mock_discover.assert_called_once()
+        self.assertEqual(call_order, ["validate", "discover"])
+
+    @patch("tap_ordway.validate_credentials", autospec=True)
+    @patch("tap_ordway.sync", autospec=True)
+    @patch("tap_ordway.discover", autospec=True)
+    @patch("tap_ordway.parse_args", autospec=True)
+    @patch("tap_ordway.set_global_config", autospec=True)
+    def test_validate_credentials_called_before_sync(
+        self, mock_set_global_config, mock_parse_args, mock_discover, mock_sync, mock_validate
+    ):
+        """validate_credentials() must be invoked before sync()."""
+        args = self._make_args(discover=False)
+        args.catalog = MagicMock()
+        mock_parse_args.return_value = args
+
+        from tap_ordway import main
+        main()
+
+        mock_validate.assert_called_once()
+        mock_sync.assert_called_once()
+
+    @patch("tap_ordway.validate_credentials", side_effect=InvalidCredentialsError("bad creds"))
+    @patch("tap_ordway.discover", autospec=True)
+    @patch("tap_ordway.parse_args", autospec=True)
+    @patch("tap_ordway.set_global_config", autospec=True)
+    def test_invalid_credentials_abort_discover(
+        self, mock_set_global_config, mock_parse_args, mock_discover, mock_validate
+    ):
+        """discover() must NOT be called when credentials are invalid."""
+        mock_parse_args.return_value = self._make_args(discover=True)
+
+        from tap_ordway import main
+        with self.assertRaises(InvalidCredentialsError):
+            main()
+
+        mock_discover.assert_not_called()

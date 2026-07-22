@@ -1,1 +1,1 @@
-from .base import RequestHandler
+from .base import InvalidCredentialsError, RequestHandler, validate_credentials
